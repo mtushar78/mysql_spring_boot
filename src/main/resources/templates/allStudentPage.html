@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>All Students</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Branch</th>
+        <th scope="col">Email Address</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student: ${students} ">
+        <td th:utext="${student.id}"></td>
+        <td th:utext="${student.firstName}"></td>
+        <td th:utext="${student.lastName}"></td>
+        <td th:utext="${student.branch}"></td>
+        <td th:utext="${student.emailId}"></td>
+    </tr>
+
+    </tbody>
+</table>
+<a href="/">Back to home</a>
+</body>
+</html>
