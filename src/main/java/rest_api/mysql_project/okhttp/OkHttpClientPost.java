@@ -17,5 +17,12 @@ public class OkHttpClientPost {
             return response.body().string();
         }
     }
+    public String delete(String url) throws IOException {
+        Request request = new Request.Builder().url(url).delete().build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
 
 }

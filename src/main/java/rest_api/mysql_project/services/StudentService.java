@@ -26,6 +26,7 @@ public class StudentService {
 
     public StudentEntity getStudentByID(Long id) throws RecordNotFoundException {
         Optional<StudentEntity> student = studentRepository.findById(id);
+        //OPTIONAL validates the null pointer exception
         if (student.isPresent()) {
             return student.get();
         } else {

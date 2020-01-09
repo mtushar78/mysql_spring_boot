@@ -36,23 +36,23 @@ public class StudentController {
         StudentEntity updated = studentService.createOrUpdateStudent(student);
         return new ResponseEntity<StudentEntity>(updated, new HttpHeaders(), HttpStatus.OK);
     }
+    /* @PutMapping("/{id}")
+        public ResponseEntity<StudentEntity> updateEmployee(@PathVariable(value = "id") Long id,
+                                                       @Valid @RequestBody StudentEntity employeeDetails) throws RecordNotFoundException {
+            StudentEntity student = employeeRepository.findById(employeeId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
 
+            employee.setEmailId(employeeDetails.getEmailId());
+            employee.setLastName(employeeDetails.getLastName());
+            employee.setFirstName(employeeDetails.getFirstName());
+            final Employee updatedEmployee = employeeRepository.save(employee);
+            return ResponseEntity.ok(updatedEmployee);
+        }*/
     @DeleteMapping("/{id}")
     public HttpStatus deleteStudentById(@PathVariable("id") Long id)
             throws RecordNotFoundException {
         studentService.deleteStudentById(id);
         return HttpStatus.FORBIDDEN;
     }
-   /* @PutMapping("/{id}")
-    public ResponseEntity<StudentEntity> updateEmployee(@PathVariable(value = "id") Long id,
-                                                   @Valid @RequestBody StudentEntity employeeDetails) throws RecordNotFoundException {
-        StudentEntity student = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
 
-        employee.setEmailId(employeeDetails.getEmailId());
-        employee.setLastName(employeeDetails.getLastName());
-        employee.setFirstName(employeeDetails.getFirstName());
-        final Employee updatedEmployee = employeeRepository.save(employee);
-        return ResponseEntity.ok(updatedEmployee);
-    }*/
 }
