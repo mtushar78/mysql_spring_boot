@@ -14,13 +14,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import rest_api.mysql_project.model.Delete;
 import rest_api.mysql_project.model.StudentEntity;
 import rest_api.mysql_project.okhttp.OkHttpClientPost;
 import rest_api.mysql_project.repository.StudentRepository;
+import rest_api.mysql_project.services.DeleteService;
+import rest_api.mysql_project.services.DeleteServiceImpl;
+import rest_api.mysql_project.services.StudentService;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+
+import static java.lang.System.exit;
 
 
 @Controller
@@ -30,11 +36,26 @@ public class ApiTestController {
     RestTemplate restTemplate;
     @Autowired
     StudentRepository repository;
+    @Autowired
+    DeleteServiceImpl deleteService;
+
+    @Autowired
+    StudentService studentService;
+
+
+    @GetMapping(value = "/delete/{id}")
+    public String delete(@PathVariable(value = "id") String id) {
+
+        System.out.println(id +"debug xx");
+        deleteService.delete(Long.parseLong(id));
+        return "allStudentPage";
+    }
 
     @GetMapping
     public String homePage(){
         return "home_view";
     }
+
     @GetMapping("/getAllStudents")
     public String home_Page(Model model){
         String url = "http://localhost:8080/student";
@@ -64,7 +85,7 @@ public class ApiTestController {
         return "creatStudent";
     }
     @RequestMapping(value = "/addStudentPost", method = RequestMethod.POST)
-    public String getStudents(@ModelAttribute("student") StudentEntity student) {
+    public String getStudents(@ModelAttribute("student") StudentEntity student, Model model) {
 
         OkHttpClientPost example = new OkHttpClientPost();
         String json = "{\r\n" +
@@ -77,9 +98,11 @@ public class ApiTestController {
         String response = null;
         try {
             response = example.post("http://localhost:8080/student", json);
+            model.addAttribute("response",response);
 
         } catch (IOException e) {
             e.printStackTrace();
+            model.addAttribute("response",e);
         }
         System.out.println(response);
 
@@ -88,18 +111,19 @@ public class ApiTestController {
     @GetMapping(value="/deleteStudent")
     public String delStudent( Model model) {
 
-        model.addAttribute("student", new String());
+      model.addAttribute("objectt", new Delete());
 //        return restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
         return "deleteStudent";
     }
 
-    @RequestMapping(value="/deleteStudentApi" , method = RequestMethod.DELETE)
-    public String deleteStudent( @ModelAttribute("delStudent") String delStudent, Model model) {
-        System.out.println(delStudent);
+//    @DeleteMapping(value="/deleteStudentApi")
+    @RequestMapping(value="/deleteStudentApi", method = RequestMethod.DELETE)
+    public String deleteStudent( @RequestParam("objectt") Long objectt, Model model) {
+//        System.out.println(objectt.id);
         OkHttpClientPost example = new OkHttpClientPost();
         String response = null;
         try {
-            response = example.delete("http://localhost:8080/student/"+delStudent);
+            response = example.delete("http://localhost:8080/student/"+objectt);
             model.addAttribute(response);
         } catch (IOException e) {
             e.printStackTrace();

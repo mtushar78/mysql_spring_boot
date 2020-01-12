@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
     <meta charset="UTF-8">
     <title>All Students</title>
@@ -27,6 +28,10 @@
         <td th:utext="${student.lastName}"></td>
         <td th:utext="${student.branch}"></td>
         <td th:utext="${student.emailId}"></td>
+        <td>
+            <a th:href="@{'/delete/' + ${student.id}}" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+
     </tr>
 
     </tbody>

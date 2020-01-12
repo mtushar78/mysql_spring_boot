@@ -15,6 +15,7 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
+
     public List<StudentEntity> getAllStudents() {
         List<StudentEntity> studentList = studentRepository.findAll();
         if (studentList.size() > 0) {

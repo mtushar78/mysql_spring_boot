@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rest_api.mysql_project.exceptions.RecordNotFoundException;
 import rest_api.mysql_project.model.StudentEntity;
+import rest_api.mysql_project.services.DeleteService;
+import rest_api.mysql_project.services.DeleteServiceImpl;
 import rest_api.mysql_project.services.StudentService;
 
 import javax.validation.Valid;
@@ -19,10 +21,14 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    @Autowired
+    DeleteServiceImpl deleteService;
+
 
     @GetMapping
     public ResponseEntity<List<StudentEntity>> getAllStudents(){
-        List<StudentEntity> studentEntityList = studentService.getAllStudents();
+//        List<StudentEntity> studentEntityList = studentService.getAllStudents();
+        List<StudentEntity> studentEntityList = deleteService.findAllStudent();
         return new ResponseEntity<List<StudentEntity>> (studentEntityList, new HttpHeaders(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
@@ -48,11 +54,11 @@ public class StudentController {
             final Employee updatedEmployee = employeeRepository.save(employee);
             return ResponseEntity.ok(updatedEmployee);
         }*/
-    @DeleteMapping("/{id}")
+    @GetMapping("/delete/{id}")
     public HttpStatus deleteStudentById(@PathVariable("id") Long id)
             throws RecordNotFoundException {
         studentService.deleteStudentById(id);
-        return HttpStatus.FORBIDDEN;
+        return HttpStatus.OK;
     }
 
 }
