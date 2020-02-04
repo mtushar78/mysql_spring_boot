@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rest_api.mysql_project.exceptions.RecordNotFoundException;
+import rest_api.mysql_project.model.Student;
 import rest_api.mysql_project.model.StudentEntity;
+import rest_api.mysql_project.repository.NewStudentRepo;
 import rest_api.mysql_project.services.StudentService;
 
 import javax.validation.Valid;
@@ -18,6 +20,9 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    NewStudentRepo newStudentRepo;
 
 
     @GetMapping
@@ -53,6 +58,11 @@ public class StudentController {
             throws RecordNotFoundException {
         studentService.deleteStudentById(id);
         return HttpStatus.FORBIDDEN;
+    }
+    @GetMapping("/api/new")
+    public ResponseEntity<List<Student>> getAllNewStudents(){
+        List<Student> student =  newStudentRepo.findAll();
+        return new ResponseEntity<List<Student>>(student, new HttpHeaders(), HttpStatus.OK);
     }
 
 }
