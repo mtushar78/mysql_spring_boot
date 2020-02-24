@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import rest_api.mysql_project.model.Student;
 import rest_api.mysql_project.model.StudentEntity;
 import rest_api.mysql_project.okhttp.OkHttpClientPost;
 import rest_api.mysql_project.repository.StudentRepository;
@@ -64,19 +65,19 @@ public class ApiTestController {
         return "creatStudent";
     }
     @RequestMapping(value = "/addStudentPost", method = RequestMethod.POST)
-    public String getStudents(@ModelAttribute("student") StudentEntity student) {
+    public String getStudents(@ModelAttribute("student") Student student) {
 
         OkHttpClientPost example = new OkHttpClientPost();
         String json = "{\r\n" +
-                    " \"firstName\" :\""+student.getFirstName()+"\",\r\n" +
-                    " \"lastName\" : \""+student.getLastName()+"\",\r\n" +
-                    " \"branch\" : \""+student.getBranch()+"\",\r\n" +
-                    " \"emailId\" : \""+student.getEmailId()+"\"\r\n" +
+                    " \"firstName\" :\""+student.getFname()+"\",\r\n" +
+                    " \"lastName\" : \""+student.getLname()+"\",\r\n" +
+                    " \"email\" : \""+student.getEmail()+"\"\r\n" +
+                    " \"semester\" : \""+student.getSemesteer()+"\"\r\n" +
                 "}";
         System.out.println(json);
         String response = null;
         try {
-            response = example.post("http://localhost:8080/student", json);
+            response = example.post("http://localhost:8080/student/api/new", json);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -26,43 +26,46 @@ public class StudentController {
 
 
     @GetMapping
-    public ResponseEntity<List<StudentEntity>> getAllStudents(){
+    public ResponseEntity<List<StudentEntity>> getAllStudents() {
         List<StudentEntity> studentEntityList = studentService.getAllStudents();
-        return new ResponseEntity<List<StudentEntity>> (studentEntityList, new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<List<StudentEntity>>(studentEntityList, new HttpHeaders(), HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<StudentEntity> getStudentById(@PathVariable("id") Long id) throws RuntimeException{
+    public ResponseEntity<StudentEntity> getStudentById(@PathVariable("id") Long id) throws RuntimeException {
         StudentEntity studentEntity = studentService.getStudentByID(id);
         return new ResponseEntity<StudentEntity>(studentEntity, new HttpHeaders(), HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<StudentEntity> createOrUpdateStudent(@Valid @RequestBody StudentEntity student)
             throws RecordNotFoundException {
         StudentEntity updated = studentService.createOrUpdateStudent(student);
         return new ResponseEntity<StudentEntity>(updated, new HttpHeaders(), HttpStatus.OK);
     }
-    /* @PutMapping("/{id}")
-        public ResponseEntity<StudentEntity> updateEmployee(@PathVariable(value = "id") Long id,
-                                                       @Valid @RequestBody StudentEntity employeeDetails) throws RecordNotFoundException {
-            StudentEntity student = employeeRepository.findById(employeeId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
 
-            employee.setEmailId(employeeDetails.getEmailId());
-            employee.setLastName(employeeDetails.getLastName());
-            employee.setFirstName(employeeDetails.getFirstName());
-            final Employee updatedEmployee = employeeRepository.save(employee);
-            return ResponseEntity.ok(updatedEmployee);
-        }*/
     @DeleteMapping("/{id}")
     public HttpStatus deleteStudentById(@PathVariable("id") Long id)
             throws RecordNotFoundException {
         studentService.deleteStudentById(id);
         return HttpStatus.FORBIDDEN;
     }
-    @GetMapping("/api/new")
-    public ResponseEntity<List<Student>> getAllNewStudents(){
-        List<Student> student =  newStudentRepo.findAll();
+
+    @GetMapping(value = "/api/new")
+    public ResponseEntity<List<Student>> getAllNewStudents() {
+        List<Student> student = newStudentRepo.findAll();
         return new ResponseEntity<List<Student>>(student, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/api/new" , consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Student> createNewStudent(@Valid @RequestBody Student student) {
+        /*HttpStatus newStudent = studentService.createNewStudent(student);
+        if (newStudent == HttpStatus.CREATED) {
+            return new ResponseEntity<Student>(student, new HttpHeaders(), newStudent);
+        }
+        return new ResponseEntity<Student>(new Student(), new HttpHeaders(), newStudent);*/
+        Student newStudent =  newStudentRepo.save(student);
+        return new ResponseEntity<Student>(newStudent,new HttpHeaders(),HttpStatus.CREATED);
     }
 
 }

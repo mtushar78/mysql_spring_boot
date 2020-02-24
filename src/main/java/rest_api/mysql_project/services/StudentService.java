@@ -1,9 +1,12 @@
 package rest_api.mysql_project.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import rest_api.mysql_project.exceptions.RecordNotFoundException;
+import rest_api.mysql_project.model.Student;
 import rest_api.mysql_project.model.StudentEntity;
+import rest_api.mysql_project.repository.NewStudentRepo;
 import rest_api.mysql_project.repository.StudentRepository;
 
 import java.util.ArrayList;
@@ -14,6 +17,8 @@ import java.util.Optional;
 public class StudentService {
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    NewStudentRepo newStudentRepo;
 
     public List<StudentEntity> getAllStudents() {
         List<StudentEntity> studentList = studentRepository.findAll();
@@ -65,5 +70,14 @@ public class StudentService {
         }else{
             throw new RecordNotFoundException("Record Not Found with the id", id);
         }
+    }
+
+    public HttpStatus createNewStudent(Student student){
+        if(!newStudentRepo.existsById(student.getId())){
+            Student newStudent = newStudentRepo.save(student);
+            return HttpStatus.CREATED;
+        }
+        return HttpStatus.FOUND;
+
     }
 }

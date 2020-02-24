@@ -9,8 +9,7 @@ import java.io.Serializable;
 @Table(name = "student")
 public class Student implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
     @Column(name = "firstname")
     private String fname;
